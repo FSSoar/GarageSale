@@ -6,6 +6,7 @@ __pycache__/
 
 .DS_Store
 .vscode/
+API_KEYS.py 
 
 
 # C extensions
