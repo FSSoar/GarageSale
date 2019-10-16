@@ -4,13 +4,23 @@ from flask_mail import Mail, Message
 from flask import make_response
 from flask import Flask, request, url_for, render_template
 
+from signup import signup
+
+
 application = Flask(__name__)
+application.register_blueprint(signup, url_prefix="/signUp" )
+
+
+
+
 
 
 @application.route('/')
 def hello_world():
 
     return render_template("index.html");
+
+
 
 
 
