@@ -2,7 +2,7 @@ from flask import jsonify
 import mysql.connector
 from flask_mail import Mail, Message
 from flask import make_response
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, render_template
 
 application = Flask(__name__)
 
@@ -10,7 +10,7 @@ application = Flask(__name__)
 @application.route('/')
 def hello_world():
 
-    return "/"
+    return render_template("index.html");
 
 
 
