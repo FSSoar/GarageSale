@@ -13,7 +13,7 @@ signup  = Blueprint('signup', __name__)
 @signup.route('/')
 def index(): 
     #render HTML Here 
-    return 'hi'
+    return render_template("signUp.html");
 
 
 
