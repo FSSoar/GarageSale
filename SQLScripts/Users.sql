@@ -1,3 +1,4 @@
+
 Create Table Users(
 	id int Primary Key NOT NULL auto_increment,
 	firstName VARCHAR(255), 
@@ -5,5 +6,6 @@ Create Table Users(
     email VARCHAR(255), 
     phoneNumber VARCHAR(255), 
     zipCode VARCHAR(255),
-    isAcrive BOOL default True
+    isActive BOOL default True, 
+    password VARCHAR(255)
 ); 
