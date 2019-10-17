@@ -2,8 +2,31 @@
     <head> 
       <title>Sign Up for Garage Sale</title>
     </head>
+    <style>
+      #home-button {
+        width: 200px;
+        height: 300px;
+      }
+    </style>
     <body> 
-        <h1> HI </h1>
+      <form action="create/user" method="POST">
+        First Name: <input type="text" name="firstName"><br>
+        Last Name: <input type="text" name="lastName"><br>
+        Email Address: <input type="text" name="email"><br>
+        Phone Number: <input type="text" name="phoneNumber"><br>
+        Zip Code: <input type="text" name="zipCode"><br>
+        Password: <input type="text" name="password"><br> 
+        <input type="submit">
+      </form>
+
+      <button id="home-button" onclick="redirectToHome()">
+        Click me to go back to the home page
+      </button>
     </body>
 
+    <script>
+      function redirectToHome(){
+        window.location.href = '/';
+      }
+    </script>
 </html>
