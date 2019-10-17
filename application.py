@@ -5,10 +5,14 @@ from flask import make_response
 from flask import Flask, request, url_for, render_template
 
 from signup import signup
+from login import login
 
 
 application = Flask(__name__)
 application.register_blueprint(signup, url_prefix="/signUp" )
+application.register_blueprint(login, url_prefix="/login" )
+
+
 
 
 

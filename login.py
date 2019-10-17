@@ -20,22 +20,27 @@ def index():
 @login.route('/validate')
 def loginUser(): 
 
-    # cnx = mysql.connector.connect(user='root', password='RootRoot1',
-    #                               host=API_KEYS.getSQLEndPoint(),
-    #                               database='innodb')
+    cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                  host=API_KEYS.getSQLEndPoint(),
+                                  database='innodb')
 
 
-    # firstName = request.args.get('firstName')
-    # lastName = request.args.get('lastName')
-    # email = request.args.get('email')
-    # phoneNumber = request.args.get('phoneNumber')
-    # zipCode = request.args.get('zipCode')
+    email = request.args.get('email')
+    password = request.args.get('password')
 
-    # try: 
-    #     insertion = "Insert INTO Users(firstName, lastName, email,phoneNumber,zipCode  ) values(%s, %s, %s,%s, %s);"
-    #     cursor = cnx.cursor()
-    #     cursor.execute(insertion, (firstName, lastName, email, phoneNumber, zipCode ))
-    #     cnx.commit()
-    #     return jsonify({"passed": True})
-    # except: 
-    return "ERROR CREATING USER"
+    
+
+    try: 
+        query = """ SELECT *
+                    from Users 
+                    Where email = %s and password = %s; 
+                """
+        cursor = cnx.cursor()
+        cursor.execute(query, (email, password))
+        result = cursor.fetchall()
+
+
+        return jsonify(len(result) > 0)
+
+    except:
+        return jsonify(False)

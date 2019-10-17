@@ -30,11 +30,13 @@ def createUser():
     email = request.args.get('email')
     phoneNumber = request.args.get('phoneNumber')
     zipCode = request.args.get('zipCode')
+    password = request.args.get('password')
+
 
     try: 
-        insertion = "Insert INTO Users(firstName, lastName, email,phoneNumber,zipCode  ) values(%s, %s, %s,%s, %s);"
+        insertion = "Insert INTO Users(firstName, lastName, email,phoneNumber,zipCode, password  ) values(%s, %s, %s,%s, %s, %s);"
         cursor = cnx.cursor()
-        cursor.execute(insertion, (firstName, lastName, email, phoneNumber, zipCode ))
+        cursor.execute(insertion, (firstName, lastName, email, phoneNumber, zipCode, password ))
         cnx.commit()
         return jsonify({"passed": True})
     except: 
