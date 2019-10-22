@@ -7,12 +7,13 @@ from flask import Flask, request, url_for, render_template
 from signup import signup
 from login import login
 from createitem import createitem
+from profile import profile 
 
 application = Flask(__name__)
 application.register_blueprint(signup, url_prefix="/signUp" )
 application.register_blueprint(login, url_prefix="/login" )
 application.register_blueprint(createitem, url_prefix="/createItem" )
-
+application.register_blueprint(profile, url_prefix="/profile" )
 
 
 
