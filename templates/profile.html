@@ -32,7 +32,7 @@
               <a class="nav-link" href="#">Buy Item</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Sell Item</a>
+              <a class="nav-link" href="/createItem">Sell Item</a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span> </a>
@@ -43,7 +43,9 @@
       </nav>
     
     <div style="margin-left: 90px;margin-right: 90px; margin-top: 15px;;">
+            <a href="/editProfile/{{userId}}" class="btn btn-primary" style="float: right; margin-top:0px;">Edit Information</a>
             <h3> {{res[0][5]}} {{res[0][6]}} </h3> 
+            
             <hr>
                 <div class="card-group" style="margin-top: 45px;">
                     <div class="card">

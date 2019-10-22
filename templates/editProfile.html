@@ -43,37 +43,45 @@
       </nav>
 
       <br> 
+      <a href="/profile/{{res[0] }}"  class="btn btn-primary" style="float: left; margin-left:30px;">Go Back</a>
+
+      
       <br> 
       <br> 
+
+      
       <center>
         <div style="width:75%;" class="jumbotron">
-            <h3>Create Product </h3> 
+            <h3>Edit Profile </h3> 
             <br>
             <br> 
-            <form action="create/{{ userId }}" method="POST">
+            <form action="update/{{res[0] }}" method="POST">
                 <div class="form-group">
                     <label for="formGroupExampleInput">Product Name</label>
-                    <input type="text" class="form-control" id="productName" placeholder="Product Name" name="productName">
+                    <input type="text" class="form-control" id="productName" placeholder="First Name" name="first" value="{{ res[1] }}">
+                </div>
+
+                <div class="form-group">
+                        <label for="formGroupExampleInput2">Last Name</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Last Name" name="last" value="{{ res[2] }}">
                 </div>
                 <div class="form-group">
-                    <label for="formGroupExampleInput2">Start Availability Date</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Start Availability Date" name="start">
+                        <label for="formGroupExampleInput2">Email</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Email" name="email" value="{{ res[3] }}" >
                 </div>
                 <div class="form-group">
-                        <label for="formGroupExampleInput2">End Availability Date</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="End Availability Date" name="end">
+                        <label for="formGroupExampleInput2">Phone Number</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Phone Number" name="phoneNum" value="{{ res[4] }}">
                 </div>
                 <div class="form-group">
-                        <label for="formGroupExampleInput2">Brand Name</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Brand Name" name="brandName">
+                        <label for="formGroupExampleInput2">Zip Code</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Zip Code" name="zip" value="{{ res[5] }}">
                 </div>
-                <div class="form-group">
-                        <label for="formGroupExampleInput2">Item Description</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Item Description" name="description">
-                </div>
+
                 <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-7">Submit</button>
+                        <button type="submit" class="btn btn-primary mb-7">Save</button>
                 </div>
+                
             </form>
         </div>
     </center>
