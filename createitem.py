@@ -16,6 +16,62 @@ def index():
     return render_template("createItem.html", userId=1);
 
 
+@createitem.route('/update/create/<userId>/<itemId>', methods=["POST"])
+def updateItem(userId, itemId):
+    cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                  host=API_KEYS.getSQLEndPoint(),
+                                  database='innodb')
+
+
+
+    if request.method == 'POST':
+        cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                    host=API_KEYS.getSQLEndPoint(),
+                                    database='innodb')
+
+
+        itemName = request.form['productName']
+        availabiltyStartDate = request.form['start']
+        availabiltyEndDate = request.form['end']
+        description = request.form['description']
+        brandName = request.form['brandName']
+        print(itemId)
+
+        try: 
+            insertion = """ Update Items Set  itemName = %s,  availabiltyStartDate = %s, availabiltyEndDate = %s, description = %s, brandName = %s where id = %s  """
+            cursor = cnx.cursor()
+            cursor.execute(insertion, (itemName, availabiltyStartDate, availabiltyEndDate, description, brandName, itemId ))
+            cnx.commit()
+            return redirect("/profile/" + userId)
+            
+        except: 
+            return "ERROR CREATING USER"
+    return ""
+
+@createitem.route('/update/<item>')
+def editItem(item):
+    cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                  host=API_KEYS.getSQLEndPoint(),
+                                  database='innodb')
+
+
+
+    try: 
+        query = """ SELECT *
+                    from Items 
+                    Where id = %s %s; 
+                """
+        cursor = cnx.cursor()
+        cursor.execute(query, (item, ""))
+        result = cursor.fetchall()
+        print(result)
+
+
+        return render_template("updateItem.html", res= result[0])
+
+    except:
+        return None
+
 
 
 @createitem.route('/create/<userId>', methods=["POST"])
@@ -54,7 +110,6 @@ def createItem(userId):
             
         except: 
             return "ERROR CREATING USER"
-
 
 
 
