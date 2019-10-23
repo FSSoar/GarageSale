@@ -9,6 +9,7 @@ from login import login
 from createitem import createitem
 from profile import profile 
 from editProfile import editProfile
+from listItems import listItems
 
 application = Flask(__name__)
 application.register_blueprint(signup, url_prefix="/signUp" )
@@ -16,7 +17,7 @@ application.register_blueprint(login, url_prefix="/login" )
 application.register_blueprint(createitem, url_prefix="/createItem" )
 application.register_blueprint(profile, url_prefix="/profile" )
 application.register_blueprint(editProfile, url_prefix="/editProfile" )
-
+application.register_blueprint(listItems, url_prefix="/items" )
 
 
 
