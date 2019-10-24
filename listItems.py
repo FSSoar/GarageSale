@@ -24,7 +24,7 @@ def index(userId):
     try: 
         query = """ SELECT retailerId, itemName, brandName, description, Items.id, firstname, lastName, email, phoneNumber, zipCode, price
                     from Items  Left Join Users on Items.retailerId = Users.id
-                    where ItemName !=""; 
+                    where ItemName !="" and isCurrentlyAvailable = true; 
                 """
         cursor = cnx.cursor()
         cursor.execute(query)
@@ -59,16 +59,31 @@ def purchaseItem(userId, itemId):
     try: 
         query = """ INSERT INTO Purchases(itemId, userId, purchasePrice) values (%s, %s, %s); 
                 """
+        query2 = """Update Items 
+                    Set	isCurrentlyAvailable = %s
+                    Where id = %s;
+                """
         cursor = cnx.cursor()
         cursor.execute(query, (itemId, userId, price))
         cnx.commit()
-        result = cursor.fetchall()
-        print(result)
+        cursor.execute(query2, (False, itemId))
+        cnx.commit()
+        # result = cursor.fetchall()
+        # print(result)
         # return render_template('listAll.html')
-        return render_template("listAll.html", res= result );
-    except:
-        print("ERROR")
+
+        print(itemId)
+
+        return redirect('/items/completePurchase/'+ userId)
+    except Exception as e:
+        print(e)
 
 
 
     return render_template('listAll.html')
+
+
+
+@listItems.route('/completePurchase/<userId>')
+def completeTransaction(userId):
+    return render_template("FinishTransaction.html")
