@@ -18,6 +18,12 @@ def index(profile):
                                   database='innodb')
 
 
+    print(profile)
+    namequery = "SELECT firstname, lastName FROM Users WHERE Users.id = %s AND '1'=%s"
+    namecursor = cnx.cursor()
+    namecursor.execute(namequery, (profile, '1'))
+    name = namecursor.fetchall()
+    print(name)
 
 
     
@@ -31,7 +37,7 @@ def index(profile):
         cursor.execute(query, (profile, ""))
         result = cursor.fetchall()
         print(result)
-        return render_template("profile.html", userId=1, res= result );
+        return render_template("profile.html", userId=1, username = name, res= result );
     except:
         print("ERROR")
 
