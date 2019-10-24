@@ -20,5 +20,8 @@ Pages:
   
   -transaction tracker
   
+TODO:
+  ON CASCADE DELETE in various locations 
+    -- When you delete a user, all the items they had for sale should disappear as well. 
   
   

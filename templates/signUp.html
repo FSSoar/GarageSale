@@ -1,11 +1,17 @@
 <html> 
     <head> 
       <title>Sign Up for Garage Sale</title>
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     </head>
     <style>
       #home-button {
         width: 200px;
-        height: 300px;
+        height: 100px;
       }
     </style>
     <body> 
@@ -18,15 +24,8 @@
         Password: <input type="text" name="password"><br> 
         <input type="submit">
       </form>
-
-      <button id="home-button" onclick="redirectToHome()">
-        Click me to go back to the home page
-      </button>
+      <a href="/">Click me to go back to the home page.</a>
+      
     </body>
 
-    <script>
-      function redirectToHome(){
-        window.location.href = '/';
-      }
-    </script>
 </html>

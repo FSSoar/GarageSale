@@ -2,18 +2,18 @@ from flask import jsonify
 import mysql.connector
 from flask_mail import Mail, Message
 from flask import make_response
-from flask import Flask, request, url_for, render_template
+from flask import Flask, request, url_for, render_template, redirect, abort
 from flask import Blueprint
 import API_KEYS
 
+# from profile import profile
 
 login  = Blueprint('login', __name__)
-
 
 @login.route('/')
 def index(): 
     #render HTML Here 
-    return 'hi'
+    return render_template("login.html")
 
 
 
@@ -24,11 +24,8 @@ def loginUser():
                                   host=API_KEYS.getSQLEndPoint(),
                                   database='innodb')
 
-
     email = request.args.get('email')
     password = request.args.get('password')
-
-    
 
     try: 
         query = """ SELECT *
@@ -38,9 +35,19 @@ def loginUser():
         cursor = cnx.cursor()
         cursor.execute(query, (email, password))
         result = cursor.fetchall()
+        
+        success = len(result) > 0
+        info = result[0]
+        userid = info[0]
+        email = info[3]
 
-
-        return jsonify(len(result) > 0)
+        if success:
+            # print('redirect')
+            # print('/profile/' + str(userid))
+            return redirect('/profile/' + str(userid))
+        else:
+            abort(401)
 
     except:
-        return jsonify(False)
+        print('ERROR')
+        abort(401)
