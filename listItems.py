@@ -86,4 +86,4 @@ def purchaseItem(userId, itemId):
 
 @listItems.route('/completePurchase/<userId>')
 def completeTransaction(userId):
-    return render_template("FinishTransaction.html")
+    return render_template("FinishTransaction.html", userId = userId)
