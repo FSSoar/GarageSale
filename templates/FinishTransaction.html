@@ -35,7 +35,7 @@
               <a class="nav-link" href="/createItem">Sell Item</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/profile/{{userId}}">Profile</a>
+                <a class="nav-link" href="/profile/1">Profile</a>
               </li>
 
           </ul>
@@ -47,34 +47,7 @@
       <br> 
       <center>
         <div style="width:75%;" class="jumbotron">
-            <h3>Edit Listing </h3> 
-            <br>
-            <br> 
-            <form action="/createItem/update/create/{{res[1]}}/{{res[0]}}" method="POST">
-                <div class="form-group">
-                    <label for="formGroupExampleInput">Product Name</label>
-                    <input type="text" class="form-control" id="productName" placeholder="Product Name" name="productName" value="{{res[2]}}">
-                </div>
-                <div class="form-group">
-                    <label for="formGroupExampleInput2">Start Availability Date</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Start Availability Date" name="start" value="{{res[3]}}">
-                </div>
-                <div class="form-group">
-                        <label for="formGroupExampleInput2">End Availability Date</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="End Availability Date" name="end" value="{{res[4]}}"> 
-                </div>
-                <div class="form-group">
-                        <label for="formGroupExampleInput2">Brand Name</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Brand Name" name="brandName" value="{{res[5]}}">
-                </div>
-                <div class="form-group">
-                        <label for="formGroupExampleInput2">Item Description</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Item Description" name="description" value="{{res[6]}}">
-                </div>
-                <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-7">Save</button>
-                </div>
-            </form>
+            <h3>Transaction Complete</h3> 
         </div>
     </center>
 
