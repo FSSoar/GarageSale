@@ -26,4 +26,5 @@ TODO:
     
   Category table
   
+  Anyone can currently access any profile (if they just append a valid userid to localhost:5000/profile/)
   

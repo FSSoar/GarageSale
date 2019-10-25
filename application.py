@@ -11,6 +11,7 @@ from profile import profile
 from editProfile import editProfile
 from listItems import listItems
 from search import search
+from mongotest import mongotest
 
 application = Flask(__name__)
 application.register_blueprint(signup, url_prefix="/signUp" )
@@ -20,7 +21,7 @@ application.register_blueprint(profile, url_prefix="/profile" )
 application.register_blueprint(editProfile, url_prefix="/editProfile" )
 application.register_blueprint(listItems, url_prefix="/items" )
 application.register_blueprint(search, url_prefix="/search" )
-
+application.register_blueprint(mongotest, url_prefix='/mongotest')
 
 
 
