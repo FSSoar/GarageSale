@@ -1,0 +1,55 @@
+<html> 
+    <head> 
+      <title>Sign Up for Garage Sale</title>
+      
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+      
+    </head>
+    <body> 
+      <div className = "form-wrapper" style="width:50vw">
+          <form action="additem" method="POST">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="itemSelector">Options</label>
+                </div>
+                <select class="custom-select" id="itemSelector" name="prodname">
+                  <option value="">Choose...</option>
+                  <option>Vaccuum</option>
+                  <option>Glue</option>
+                  <option>Tape</option>
+                </select>
+              </div>
+                
+            Rating: <input type="text" name="rating" style="width:80%"><br>
+            Price: <input type="text" name="price" style="width:80%"><br>
+            Details: <input type="text" name="details" placeholder="Add any additional details about the product here" style="width:80%"><br>
+            <input type="submit">
+          </form>
+
+          <div id="suggestedPrice" style="width: 200px; height: 200px; background-color: aqua; font-size: 3em;">{{avgPrices.vaccum}}</div>
+          <a href="/">Click me to go back to the home page.</a>
+      </div>
+      
+    </body>
+
+    <script>
+      let prices = {{avgPrices | tojson}}; //syntax to read the dictionary
+      console.log(prices);
+
+      // $( "#itemSelector" )
+      //   .change(function() {
+      //     var item = "";
+      //     $( "#itemSelector option:selected" ).each(function() {
+      //       console.log( $( this ).val() );
+      //       item += $( this ).val() + " ";
+      //     });
+      //   })
+      //   .trigger("change");
+    </script>
+
+</html>
