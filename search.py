@@ -12,7 +12,39 @@ search = Blueprint('search', __name__)
 @search.route('/')
 def index(key='start'): 
     # initial page before first search is made
+    # TODO: get/send table info to generate filter options
     return render_template("searchResults.html", res=[key]) 
+
+
+def buildQuery(form):
+
+    query = 'SELECT * FROM Items'
+    
+    # if 'isCurrentlyAvailable' in request.form:
+    #     query += ' SET isCurrentlyAvailable = 1'
+
+    # TODO: enable query matches by one word (i.e. search=mower -> lawn mower)
+    # query += format('WHERE itemName SOUNDS LIKE %s', form['search'])
+    query += ' WHERE itemName SOUNDS LIKE \'{}\''.format(form['search'])
+    
+    for filter in form:
+        if form[filter] != '':
+            # note: relies on specific formatting for price range options
+            if filter == 'search':
+                continue
+            elif filter == 'isCurrentlyAvailable':
+                query += ' AND {} = 1'.format(filter)
+            # elif filter == 'price':
+            #     price_range = split(form[filter])
+            #     if price_range[0] == '<' or price_range[0] == '>':
+            #         query += ' AND {} {} {}'.format(filter, price_range[0], price_range[1])
+            #     else:
+            #         query += ' AND {} >= {}'.format(filter, price_range[0])
+            #         query += ' AND {} <= {}'.format(filter, price_range[2])
+            else: # assume follows WHERE filter = form[filter]
+                query += ' OR {} = \'{}\''.format(filter, form[filter])
+
+    return query
 
 
 @search.route('/getresults', methods=['GET','POST'])
@@ -22,38 +54,12 @@ def searchResults():
                                     host=API_KEYS.getSQLEndPoint(),
                                     database='innodb')
 
-        '''
-
-        able to make initial search using:
-        item name (exact match for now. later: SQL SOUNDEX)
-            SELECT *
-            FROM Items
-            WHERE id = %s
-
-
-        add filters: by brand, by date, (by category, by transaction/person/region?)
-        possible function for applying filters to query:
-        
-        query = ""
-        for k, v in request.form:
-            new_query = format( """ SELECT *
-                                    FROM Items
-                                    WHERE %s %s
-                                """, k, v)
-            query += new_query + 'INTERSECT\n' 
-
-        '''
-
-        search = request.form['search']
-
         try:
-            query = """ SELECT *
-                        FROM Items
-                        WHERE itemName = %s %s
-                    """
+            query = buildQuery(request.form)
+            print(query)
 
             cursor = cnx.cursor()
-            cursor. execute(query, (search, ""))
+            cursor. execute(query)
             results = cursor.fetchall()
             print(results)
             if len(results) == 0:
