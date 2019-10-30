@@ -2,7 +2,7 @@ from flask import jsonify
 import mysql.connector
 from flask_mail import Mail, Message
 from flask import make_response
-from flask import Flask, request, url_for, render_template
+from flask import Flask, request, url_for, render_template, redirect
 from flask import Blueprint
 import API_KEYS
 
@@ -37,6 +37,10 @@ def createUser():
             cursor = cnx.cursor()
             cursor.execute(insertion, (firstName, lastName, email, phoneNumber, zipCode, password ))
             cnx.commit()
-            return index()
+
+            userId = cursor.lastrowid
+            print(userId)
+            print("/profile/" + str(userId))
+            return redirect("/profile/" + str(userId))
         except: 
-            return "ERROR CREATING USER"
+            return "ERROR CREATING USER. Refresh the page and try again"

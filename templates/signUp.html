@@ -15,15 +15,55 @@
       }
     </style>
     <body> 
-      <form action="create/user" method="POST">
-        First Name: <input type="text" name="firstName"><br>
-        Last Name: <input type="text" name="lastName"><br>
-        Email Address: <input type="text" name="email"><br>
-        Phone Number: <input type="text" name="phoneNumber"><br>
-        Zip Code: <input type="text" name="zipCode"><br>
-        Password: <input type="text" name="password"><br> 
-        <input type="submit">
-      </form>
+      <center>
+        <div style="width:75%;" class="jumbotron">
+          <h3>Sign up for Garage Sale</h3> 
+          <br>
+          <br> 
+          <form action="create/user" method="POST">
+            <div class="form-group">
+                <label for="formGroupExampleInput">First Name</label>
+                <input type="text" class="form-control" id="productName" placeholder="First Name" name="firstName">
+            </div>
+
+            <div class="form-group">
+                <label for="formGroupExampleInput2">Last Name</label>
+                <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Last Name" name="lastName">
+            </div>
+
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Email Address</label>
+              <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Email" name="email">
+            </div>
+
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Phone Number</label>
+              <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Phone Number" name="phoneNumber">
+            </div>
+
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Zip Code</label>
+              <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Zip Code" name="zipCode">
+            </div>
+
+            <div class="form-group">
+              <label for="formGroupExampleInput2">Password</label>
+              <input type="password" class="form-control" id="formGroupExampleInput2" placeholder="Your password" name="password">
+            </div>
+
+            <div class="form-group">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check if you agree with the Terms and Conditions</label>
+            </div>
+
+            <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-7">Sign Up</button>
+            </div>
+              
+          </form>
+        </div>
+      </center>
+      
       <a href="/">Click me to go back to the home page.</a>
       
     </body>
