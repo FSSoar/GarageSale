@@ -17,37 +17,34 @@ def index():
 
 
 
-@login.route('/validate')
+@login.route('/validate', methods=['POST'])
 def loginUser(): 
+    if request.method == 'POST':
+        cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                    host=API_KEYS.getSQLEndPoint(),
+                                    database='innodb')
 
-    cnx = mysql.connector.connect(user='root', password='RootRoot1',
-                                  host=API_KEYS.getSQLEndPoint(),
-                                  database='innodb')
+        email = request.form['email']
+        password = request.form['password']
+        print(request.form)
+        try: 
+            query = """ SELECT *
+                        from Users 
+                        Where email = %s and password = %s; 
+                    """
+            cursor = cnx.cursor()
+            cursor.execute(query, (email, password))
+            result = cursor.fetchall()
+            
+            success = len(result) > 0
 
-    email = request.args.get('email')
-    password = request.args.get('password')
+            if success:
+                info = result[0]
+                userid = info[0]
+                return redirect('/profile/' + str(userid))
+            else:
+                abort(401)
 
-    try: 
-        query = """ SELECT *
-                    from Users 
-                    Where email = %s and password = %s; 
-                """
-        cursor = cnx.cursor()
-        cursor.execute(query, (email, password))
-        result = cursor.fetchall()
-        
-        success = len(result) > 0
-        info = result[0]
-        userid = info[0]
-        email = info[3]
-
-        if success:
-            # print('redirect')
-            # print('/profile/' + str(userid))
-            return redirect('/profile/' + str(userid))
-        else:
+        except:
+            print('ERROR')
             abort(401)
-
-    except:
-        print('ERROR')
-        abort(401)
