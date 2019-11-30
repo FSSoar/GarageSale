@@ -6,10 +6,15 @@ from flask import Flask, request, url_for, render_template, redirect
 from flask import Blueprint
 import API_KEYS
 
+import pymongo
+from bson.code import Code
+import pprint
 
 createitem = Blueprint('createitem', __name__)
 
-
+client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
+db = client.cs411
+prices = db.prices
 
 @createitem.route('/')
 def index():
@@ -104,9 +109,11 @@ def createItem(userId):
             insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description  ) 
                                 values(%s, %s, %s,%s, %s, %s, %s, %s );"""
             cursor = cnx.cursor()
-            cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description ))
+            ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description ))
             cnx.commit()
-            return redirect("/")
+            dictToInsert = { "itemId":str(cursor.lastrowid), "personId": int(userId) }
+            prices.insert_one(dictToInsert)
+            return redirect("/profile/"+str(userId))
             
         except: 
             return "ERROR CREATING USER"

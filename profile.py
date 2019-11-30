@@ -6,10 +6,15 @@ from flask import Flask, request, url_for, render_template, redirect
 from flask import Blueprint
 import API_KEYS
 
+import pymongo
+from bson.code import Code
+import pprint
 
 profile = Blueprint('profile', __name__)
 
-
+client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
+db = client.cs411
+prices = db.prices
 
 @profile.route('/<profile>')
 def index(profile):
@@ -56,6 +61,6 @@ def deleteItem(userID, itemID):
     cursor = cnx.cursor()
     cursor.execute(delete, (itemID, ""))
     cnx.commit()
-    
+    ret = prices.delete_many( {"itemId" : str(itemID)} )
     
     return redirect("/profile/" + userID)

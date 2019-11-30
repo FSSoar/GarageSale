@@ -11,7 +11,7 @@ from bson.code import Code
 import pprint
 
 mongotest = Blueprint('mongotest', __name__)
-client = pymongo.MongoClient('mongodb+srv://mohics411:BD5vJ0bAHNmqs04r@cluster0-cnmmg.mongodb.net/test?retryWrites=true&w=majority')
+client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
 prices = db.prices
 
@@ -33,7 +33,7 @@ def testMongo():
     # for doc in collection.find():
     #     pprint.pprint(doc)
     
-    print(suggestPrice)
+    # print(suggestPrice)
     return render_template('mongotest.html', avgPrices = suggestPrice ) 
 
 @mongotest.route('/additem', methods=['POST'])

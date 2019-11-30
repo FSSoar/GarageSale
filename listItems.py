@@ -7,19 +7,21 @@ from flask import Blueprint
 import API_KEYS
 
 
+import pymongo
+from bson.code import Code
+import pprint
+
 listItems = Blueprint('listItems', __name__)
 
+client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
+db = client.cs411
+prices = db.prices
 
 @listItems.route('/<userId>')
 def index(userId):
     cnx = mysql.connector.connect(user='root', password='RootRoot1',
                                   host=API_KEYS.getSQLEndPoint(),
                                   database='innodb')
-
-
-
-
-    
 
     try: 
         query = """ SELECT retailerId, itemName, brandName, description, Items.id, firstname, lastName, email, phoneNumber, zipCode, price
@@ -29,8 +31,16 @@ def index(userId):
         cursor = cnx.cursor()
         cursor.execute(query)
         result = cursor.fetchall()
-        print(result)
-        # return render_template('listAll.html')
+
+        pipeline = [
+            {"$group": {"_id": "$personId", "items": {"$push": {"itemId" : "$itemId"}}} },
+            {"$project": {"_id": 0, "personId":"$_id", "items": 1}},
+            {"$sort": {"items":1}}
+        ]
+        
+        recs = prices.aggregate(pipeline)
+        for doc in recs:
+            print(doc)
         return render_template("listAll.html", res= result, userId=userId );
     except:
         print("ERROR")
