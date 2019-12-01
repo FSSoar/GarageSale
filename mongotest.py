@@ -13,7 +13,7 @@ import pprint
 mongotest = Blueprint('mongotest', __name__)
 client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
-prices = db.prices
+Recommender = db.Recommender
 
 @mongotest.route('/')
 def testMongo():
@@ -22,7 +22,7 @@ def testMongo():
         {"$project": {"_id": 0, "itemName":"$_id", "totalPrice": 1, "count":1}},
         {"$sort": {"itemName":1}}
     ]
-    result = prices.aggregate(pipeline)
+    result = Recommender.aggregate(pipeline)
     suggestPrice = {}
     for doc in result:
         p = doc['totalPrice'] / doc['count']

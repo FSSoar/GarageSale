@@ -15,7 +15,14 @@ listItems = Blueprint('listItems', __name__)
 
 client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
-prices = db.prices
+Recommender = db.Recommender
+
+def stringifyarray(a):
+    ans = ""
+    for astring in a:
+        ans += astring
+        ans += " "
+    return ans
 
 @listItems.route('/<userId>')
 def index(userId):
@@ -32,16 +39,33 @@ def index(userId):
         cursor.execute(query)
         result = cursor.fetchall()
 
-        pipeline = [
-            {"$group": {"_id": "$personId", "items": {"$push": {"itemId" : "$itemId"}}} },
-            {"$project": {"_id": 0, "personId":"$_id", "items": 1}},
-            {"$sort": {"items":1}}
-        ]
-        
-        recs = prices.aggregate(pipeline)
+        ret = Recommender.find_one({"personId": str(userId)})
+        itemsToCompare = ret['items']
+        compString = stringifyarray(itemsToCompare)
+        recs = Recommender.find({"$text": {"$search": compString}}, {"score": {'$meta': 'textScore'}}).sort([('score', {'$meta':'textScore'})])
+        idlist = []
+        n = recs.count()
+        count = 0
+        orString = ""
         for doc in recs:
-            print(doc)
-        return render_template("listAll.html", res= result, userId=userId );
+            count += 1
+            currId = doc['personId']
+            if currId == str(userId):
+                continue 
+        
+            if count == n:
+                orString += doc['personId']
+            else:
+                orString += str(doc['personId'])+","
+
+        namequery = (""" SELECT firstname, lastName 
+                        FROM Users 
+                        WHERE id IN ( """+orString+""" )
+                    """) 
+        namecursor = cnx.cursor()
+        namecursor.execute(namequery)
+        thename = namecursor.fetchall()
+        return render_template("listAll.html", res= result, userId=userId, names = thename );
     except:
         print("ERROR")
 
@@ -78,11 +102,24 @@ def purchaseItem(userId, itemId):
         cnx.commit()
         cursor.execute(query2, (False, itemId))
         cnx.commit()
-        # result = cursor.fetchall()
-        # print(result)
-        # return render_template('listAll.html')
 
-        print(itemId)
+        # print(itemId)
+        ret = Recommender.find_one({"personId": str(userId)})
+        if ret == None:
+            print("here!")
+            dictToInsert = {"personId": str(userId)}
+            Recommender.insert_one(dictToInsert)
+        Recommender.update_one(
+            {"personId": str(userId)},
+            {
+                "$push": {
+                    "items": {
+                        "$each": [str(itemId)],
+                        "$sort": 1
+                    }
+                }
+            }
+        )
 
         return redirect('/items/completePurchase/'+ userId)
     except Exception as e:

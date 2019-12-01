@@ -44,9 +44,11 @@
     
     <div style="margin-left: 90px;margin-right: 90px; margin-top: 15px;;">
             <a href="/editProfile/{{userId}}" class="btn btn-primary" style="float: right; margin-top:0px;">Edit Information</a>
-            <h3> Recommended Items </h3>
-
-            <h3> Available Items </h3> 
+            <h3> Similar Buyers! </h3>
+            {% for r in names %}
+              <h4>{{r[0]}} {{r[1]}}</h4>
+            {% endfor %}
+            
 
             <div style="margin-top: 45px;">
                     <h3> Items for Sale</h3> 

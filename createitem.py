@@ -14,7 +14,7 @@ createitem = Blueprint('createitem', __name__)
 
 client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
-prices = db.prices
+Recommender = db.Recommender
 
 @createitem.route('/')
 def index():
@@ -111,8 +111,8 @@ def createItem(userId):
             cursor = cnx.cursor()
             ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description ))
             cnx.commit()
-            dictToInsert = { "itemId":str(cursor.lastrowid), "personId": int(userId) }
-            prices.insert_one(dictToInsert)
+            dictToInsert = { "newItem":str(cursor.lastrowid), "owner": int(userId) }
+            Recommender.insert_one(dictToInsert)
             return redirect("/profile/"+str(userId))
             
         except: 

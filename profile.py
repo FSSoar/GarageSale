@@ -14,7 +14,7 @@ profile = Blueprint('profile', __name__)
 
 client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
-prices = db.prices
+Recommender = db.Recommender
 
 @profile.route('/<profile>')
 def index(profile):
@@ -61,6 +61,6 @@ def deleteItem(userID, itemID):
     cursor = cnx.cursor()
     cursor.execute(delete, (itemID, ""))
     cnx.commit()
-    ret = prices.delete_many( {"itemId" : str(itemID)} )
+    ret = Recommender.delete_many( {"itemId" : str(itemID)} )
     
     return redirect("/profile/" + userID)
