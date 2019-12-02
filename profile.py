@@ -42,7 +42,7 @@ def index(profile):
         cursor.execute(query, (profile, ""))
         result = cursor.fetchall()
         print(result)
-        return render_template("profile.html", userId=1, username = name, res= result );
+        return render_template("profile.html", userId=profile, username = name, res= result );
     except:
         print("ERROR")
 

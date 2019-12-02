@@ -16,9 +16,22 @@ client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
 Recommender = db.Recommender
 
-@createitem.route('/')
-def index():
-    return render_template("createItem.html", userId=1);
+@createitem.route('/<userId>')
+def index(userId):
+    cnx = mysql.connector.connect(user='root', password='RootRoot1',
+                                  host=API_KEYS.getSQLEndPoint(),
+                                  database='innodb')
+    try:
+        query = """ SELECT categoryId, AVG(price)
+                    from Items 
+                    GROUP BY categoryId; 
+                """
+        cursor = cnx.cursor()
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return render_template("createItem.html", userId=userId, avgPrices=result)
+    except:
+        return "error"
 
 
 @createitem.route('/update/create/<userId>/<itemId>', methods=["POST"])
@@ -33,14 +46,11 @@ def updateItem(userId, itemId):
         cnx = mysql.connector.connect(user='root', password='RootRoot1',
                                     host=API_KEYS.getSQLEndPoint(),
                                     database='innodb')
-
-
         itemName = request.form['productName']
         availabiltyStartDate = request.form['start']
         availabiltyEndDate = request.form['end']
         description = request.form['description']
         brandName = request.form['brandName']
-        print(itemId)
 
         try: 
             insertion = """ Update Items Set  itemName = %s,  availabiltyStartDate = %s, availabiltyEndDate = %s, description = %s, brandName = %s where id = %s  """
@@ -69,8 +79,6 @@ def editItem(item):
         cursor = cnx.cursor()
         cursor.execute(query, (item, ""))
         result = cursor.fetchall()
-        print(result)
-
 
         return render_template("updateItem.html", res= result[0])
 
@@ -86,13 +94,9 @@ def createItem(userId):
                                   database='innodb')
 
 
-
     if request.method == 'POST':
-        cnx = mysql.connector.connect(user='root', password='RootRoot1',
-                                    host=API_KEYS.getSQLEndPoint(),
-                                    database='innodb')
-
-
+        
+        print(request.form)
         retailerID = userId; 
         itemName = request.form['productName']
         availabiltyStartDate = request.form['start']
@@ -101,10 +105,6 @@ def createItem(userId):
         brandName = request.form['brandName']
         categoryId = 1
 
-
-        
-        print(retailerID)
-        print(itemName)
         try: 
             insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description  ) 
                                 values(%s, %s, %s,%s, %s, %s, %s, %s );"""
