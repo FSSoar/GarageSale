@@ -96,14 +96,13 @@ def createItem(userId):
 
     if request.method == 'POST':
         
-        print(request.form)
         retailerID = userId; 
         itemName = request.form['productName']
         availabiltyStartDate = request.form['start']
         availabiltyEndDate = request.form['end']
         description = request.form['description']
         brandName = request.form['brandName']
-        categoryId = 1
+        categoryId = request.form['category']
 
         try: 
             insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description  ) 

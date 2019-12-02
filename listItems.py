@@ -71,7 +71,7 @@ def index(userId):
 
 
 
-    return render_template('listAll.html')
+    return render_template('listAll.html', userId=userId)
 
 
 
@@ -127,7 +127,7 @@ def purchaseItem(userId, itemId):
 
 
 
-    return render_template('listAll.html')
+    return render_template('listAll.html', userId=userId)
 
 
 

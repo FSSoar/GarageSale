@@ -30,7 +30,7 @@ application.register_blueprint(mongotest, url_prefix='/mongotest')
 @application.route('/')
 def hello_world():
 
-    return render_template("home.html");
+    return render_template("home.html", userId=1);
 
 
 
