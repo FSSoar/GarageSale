@@ -39,10 +39,11 @@ def index(userId):
     try: 
         query = """ SELECT retailerId, itemName, brandName, description, Items.id, firstname, lastName, email, phoneNumber, zipCode, price
                     from Items  Left Join Users on Items.retailerId = Users.id
-                    where ItemName !="" and isCurrentlyAvailable = true; 
+                    where ItemName !="" and isCurrentlyAvailable = true AND Users.id <> %s; 
                 """
         cursor = cnx.cursor()
-        cursor.execute(query)
+        data = (userId, )
+        cursor.execute(query, data)
         result = cursor.fetchall()
 
         ret = Recommender.find_one({"personId": str(userId)})
