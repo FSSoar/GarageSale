@@ -37,8 +37,22 @@
             <li class="nav-item active">
                 <a class="nav-link" href="#">Profile <span class="sr-only">(current)</span> </a>
               </li>
-
+              
           </ul>
+
+          <div style="width:60%" ></div>
+
+          <!-- </ul>  -->
+          <div style="display: flex; justify-content: flex-end;">
+          
+          <form class="form-inline my-2 my-lg-0" action="/search/getresults/{{userId}}" method="GET">
+                <input class="form-control" type="text" placeholder="Search" name="search" aria-label="Search" style="margin-right: 10px;">
+                 
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+        </div>
+        
         </div>
       </nav>
     
