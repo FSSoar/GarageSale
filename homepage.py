@@ -10,7 +10,13 @@ home = Blueprint('home', __name__)
 
 @home.route('/')
 def index():
-    return render_template("home.html", userId=1)
+    return render_template("home.html")
+
+
+@home.route('/<userId>')
+def indexUser(userId):
+    return render_template("home.html", userId=userId);
+
 
 @home.route('/home/search/<userId>/')
 def searchItem(userId, itemName):

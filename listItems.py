@@ -24,6 +24,12 @@ def stringifyarray(a):
         ans += " "
     return ans
 
+
+@listItems.route('/')
+def login():
+    return redirect("/login");
+
+
 @listItems.route('/<userId>')
 def index(userId):
     cnx = mysql.connector.connect(user='root', password='RootRoot1',

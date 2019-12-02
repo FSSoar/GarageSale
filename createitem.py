@@ -16,6 +16,12 @@ client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
 Recommender = db.Recommender
 
+
+@createitem.route('/')
+def login():
+    return redirect("/login");
+
+
 @createitem.route('/<userId>')
 def index(userId):
     cnx = mysql.connector.connect(user='root', password='RootRoot1',

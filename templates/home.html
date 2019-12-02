@@ -8,14 +8,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <body>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="/#">GarageSale</a>
+          <a class="navbar-brand" href="/#/{{userId}}">GarageSale</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item active">
-                <a class="nav-link" href="/#">Home </a>
+                <a class="nav-link" href="/#/{{userId}}">Home </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="/items/{{userId}}">Buy Item</a>
@@ -26,8 +26,11 @@
               <li class="nav-item ">
                   <a class="nav-link" href="/profile/{{userId}}">Profile </a>
                 </li>
-              <li class="nav-item ">
-                  <a class="nav-link" href="/signUp">Register for an Account</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Log In</a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/signUp">Register for an Account</a>
                 </li>
             </ul>
           </div>
