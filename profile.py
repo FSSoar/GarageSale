@@ -16,12 +16,6 @@ client = pymongo.MongoClient(API_KEYS.getMongoEndPoint())
 db = client.cs411
 Recommender = db.Recommender
 
-
-@profile.route('/')
-def login():
-    return redirect("/login");
-
-
 @profile.route('/<profile>')
 def index(profile):
     cnx = mysql.connector.connect(user='root', password='RootRoot1',
@@ -29,14 +23,10 @@ def index(profile):
                                   database='innodb')
 
 
-    print(profile)
-    namequery = "SELECT firstname, lastName FROM Users WHERE Users.id = %s AND '1'=%s"
+    namequery = "SELECT firstname, lastName FROM Users WHERE Users.id = %s"
     namecursor = cnx.cursor()
-    namecursor.execute(namequery, (profile, '1'))
+    namecursor.execute(namequery, (profile,))
     name = namecursor.fetchall()
-    print(name)
-
-
     
 
     try: 
@@ -47,14 +37,25 @@ def index(profile):
         cursor = cnx.cursor()
         cursor.execute(query, (profile, ""))
         result = cursor.fetchall()
-        print(result)
-        return render_template("profile.html", userId=profile, username = name, res= result );
+
+        tquery = """ SELECT retailer.firstName as ownerFirstName, retailer.lastName as ownerLastName, purchase_date, purchasePrice, Items.itemName, Items.brandName, Items.availabiltyEndDate as endTime, Items.availabiltyStartDate as startTime
+                    FROM Users as retailer, (Users Inner Join Purchases on Users.id = Purchases.userId) Inner Join Items on Purchases.itemId = Items.id
+                    Where Users.id = %s AND retailer.id = retailerID
+
+                """
+
+        tcursor = cnx.cursor()
+        tdata = (str(profile), )
+        tcursor.execute(tquery, tdata)
+        result2 = tcursor.fetchall()
+        print(result2)
+
+        return render_template("profile.html", userId=profile, username = name, res= result, transList=result2 );
     except:
         print("ERROR")
+        return "error"
 
 
-
-    return render_template("profile.html", userId=1 );
 
 
 
