@@ -55,9 +55,29 @@
     
     <div style="margin-left: 90px;margin-right: 90px; margin-top: 15px;;">
             <a href="/editProfile/{{userId}}" class="btn btn-primary" style="float: right; margin-top:0px;">Edit Information</a>
-            <h3> Similar Buyers! </h3>
+            <h3> Recommended Purchases based off similarity to other buyers! </h3>
             {% for r in names %}
-              <h4>{{r[0]}} {{r[1]}}</h4>
+              <div class="card border-dark mb-3" style="">
+                <div class="card-header"> 
+                  Item
+                  <!-- <a href="deleteItem/{{r[0] }}/{{r[4]}}" class="btn btn-danger" style="float: right; ;">Delete Item</a> -->
+                  <a></a>
+                </div>
+                <div class="card-body text-dark">
+                  <div class="row"> 
+                      <div class="col-10"> 
+                        <h5 class="card-title">{{r[0] }} </h5>
+                        <p class="card-text"> Item #{{r[3]}}</p>
+                        <p class="card-text"> Brand: {{r[1]}}</p>
+                        <p class="card-text"> {{r[2]}}</p>
+                    </div>
+                      <div class="col-2" style="min-height: 90%; text-align:center;">
+                        <h1>${{r[4]}}</h1>
+                        <a href="purchase/{{userId}}/{{r[4]}}?price={{r[10]}}" class="btn btn-primary" style="margin-right: 30px; margin-left: 30px;">Purchase Item</a>
+                      </div>
+                  </div>
+                </div>
+              </div>
             {% endfor %}
             
 
