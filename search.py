@@ -82,17 +82,17 @@ def searchPlainText(queryStr):
                     (
                         (Select *
                         From Items Left Join Popularity On Popularity.itemId = Items.id
-                        Where (SOUNDEX(Items.itemName) like SOUNDEX(%s) or Items.itemName Like %s) and Items.itemName != '' and Popularity.itemId 
+                        Where (SOUNDEX(Items.itemName) like SOUNDEX(%s) or Items.itemName Like %s) and Items.itemName != ''
                         order By Popularity.itemCount)
                         Union
                         (Select *
                         From Items Left Join Popularity On Popularity.itemId = Items.id
-                        Where (SOUNDEX(Items.brandName) like SOUNDEX(%s) or Items.brandName Like %s) and Items.itemName != '' and Popularity.itemId 
+                        Where (SOUNDEX(Items.brandName) like SOUNDEX(%s) or Items.brandName Like %s) and Items.itemName != ''
                         order By Popularity.itemCount)
                         Union
                         (Select *
                         From Items Left Join Popularity On Popularity.itemId = Items.id
-                        Where (SOUNDEX(Items.description) like SOUNDEX(%s) or Items.description Like %s) and Items.itemName != '' and Popularity.itemId 
+                        Where (SOUNDEX(Items.description) like SOUNDEX(%s) or Items.description Like %s) and Items.itemName != ''
                         order By Popularity.itemCount)
                         Union
                         (
@@ -121,7 +121,7 @@ def searchPlainText(queryStr):
             print(query % (queryStr,queryStr + '%',queryStr,queryStr+ '%',queryStr,queryStr+ '%',queryStr,queryStr+ '%'))
 
             cursor = cnx.cursor()
-            cursor. execute(query, (queryStr, queryStr,  queryStr, queryStr, queryStr, queryStr, queryStr, queryStr))
+            cursor. execute(query, (queryStr, queryStr+ '%',  queryStr, queryStr+ '%', queryStr, queryStr+ '%', queryStr, queryStr+ '%'))
             results = cursor.fetchall()
             print(results)
             if len(results) == 0:
