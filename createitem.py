@@ -70,8 +70,8 @@ def updateItem(userId, itemId):
             return "ERROR CREATING USER"
     return ""
 
-@createitem.route('/update/<item>')
-def editItem(item):
+@createitem.route('/update/<userId>/<item>')
+def editItem(userId, item):
     cnx = mysql.connector.connect(user='root', password='RootRoot1',
                                   host=API_KEYS.getSQLEndPoint(),
                                   database='innodb')
@@ -87,7 +87,7 @@ def editItem(item):
         cursor.execute(query, (item, ""))
         result = cursor.fetchall()
         print(result[0])
-        return render_template("updateItem.html", res= result[0])
+        return render_template("updateItem.html", userId=userId, res= result[0])
 
     except:
         return None

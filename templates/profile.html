@@ -23,7 +23,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="collapse navbar-collapse order-1" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" href="/items/{{userId}}">Recommended For You</a>
@@ -39,21 +39,21 @@
               </li>
               
           </ul>
-
-          <div style="width:60%" ></div>
-
-          <!-- </ul>  -->
-          <div style="display: flex; justify-content: flex-end;">
-          
-          <form class="form-inline my-2 my-lg-0" action="/search/getresults/{{userId}}" method="GET">
-                <input class="form-control" type="text" placeholder="Search" name="search" aria-label="Search" style="margin-right: 10px;">
-                 
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-
         </div>
+
+        <div class="mx-auto order-0" ></div>
+
+        <!-- </ul>  -->
+        <div style="display: flex; justify-content: flex-end;" class="order-2">
         
-        </div>
+        <form class="form-inline my-2 my-lg-0" action="/search/getresults/{{userId}}" method="GET">
+              <input class="form-control" type="text" placeholder="Search" name="search" aria-label="Search" style="margin-right: 10px;">
+               
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+
+      </div>
+        
       </nav>
     
     <div style="margin-left: 90px;margin-right: 90px; margin-top: 15px;;">
@@ -63,7 +63,7 @@
             <hr>
                 <div class="card-group" style="margin-top: 45px;">
                     <div class="card">
-                            <h5 class="card-header">Total Sales</h5>
+                            <h5 class="card-header">Total Spent</h5>
                             <div class="card-body">
                             <center>
                                 <h1>
@@ -106,23 +106,40 @@
                     <h3> Items for Sale</h3> 
                     <hr>
                     {% for r in res %}
-                    <div class="card border-dark mb-3" style="">
-                            <div class="card-header"> 
-                                Item
-                                <a href="deleteItem/{{r[0] }}/{{r[4]}}" class="btn btn-danger" style="float: right; ;">Delete Item</a>
-                                <a href="/createItem/update/{{r[4]}}" class="btn btn-primary" style="float: right; margin-right: 30px; margin-left: 30px;">Edit Item</a>
-                                <a></a>
-                                
-                             </div>
-                            <div class="card-body text-dark">
-                                
-                              <h5 class="card-title">{{r[1] }} </h5>
-                              <p class="card-text"> Item #{{r[4]}}</p>
-                              <p class="card-text"> Brand: {{r[2]}}</p>
-                              <p class="card-text"> {{r[3]}}</p>
-                              
-                            </div>
+                      {% if r[5] == 1 %}
+                      <div class="card border-dark mb-3" style="">
+                        <div class="card-header"> 
+                            <h3 style="float:left">Item</h3>
+                            <a href="deleteItem/{{r[0] }}/{{r[4]}}" class="btn btn-danger" style="float: right; ;">Delete Item</a>
+                            <a href="/createItem/update/{{userId}}/{{r[4]}}" class="btn btn-primary" style="float: right; margin-right: 30px; margin-left: 30px;">Edit Item</a>
+                            <a></a>
+                            
                           </div>
+                        <div class="card-body text-dark">
+                            
+                          <h5 class="card-title">{{r[1] }} </h5>
+                          <p class="card-text"> Item #{{r[4]}}</p>
+                          <p class="card-text"> Brand: {{r[2]}}</p>
+                          <p class="card-text"> {{r[3]}}</p>
+                          
+                        </div>
+                      </div>
+                      {% else %}
+                      <div class="card border-dark mb-3" style="">
+                        <div class="card-header bg-danger"> 
+                            <h3 style="float:left">SOLD - Item </h3>
+                            
+                          </div>
+                        <div class="card-body text-dark">
+                            
+                          <h5 class="card-title">{{r[1] }} </h5>
+                          <p class="card-text"> Item #{{r[4]}}</p>
+                          <p class="card-text"> Brand: {{r[2]}}</p>
+                          <p class="card-text"> {{r[3]}}</p>
+                          
+                        </div>
+                      </div>
+                      {% endif %}
                     {% endfor %}
 
             </div> 

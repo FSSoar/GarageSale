@@ -38,59 +38,70 @@ def index(userId):
                                   database='innodb')
 
     try: 
-        query = """ SELECT retailerId, itemName, brandName, description, Items.id, firstname, lastName, email, phoneNumber, zipCode, price
-                    from Items  Left Join Users on Items.retailerId = Users.id
-                    where ItemName !="" and isCurrentlyAvailable = true AND Users.id <> %s; 
+        query = """ SELECT retailerId, itemName, brandName, description, Items.id, theRetailer.firstname, theRetailer.lastName, theRetailer.email, theRetailer.phoneNumber, theRetailer.zipCode, price
+                    from Items, Users as theRetailer
+                    where ItemName !="" and isCurrentlyAvailable = true AND Items.retailerId <> %s AND Items.retailerId = theRetailer.id; 
                 """
         cursor = cnx.cursor()
         data = (userId, )
         cursor.execute(query, data)
         result = cursor.fetchall()
-        print(result)
+
 
         ret = Recommender.find_one({"personId": str(userId)})
-        itemsToCompare = ret['items']
-        compString = stringifyarray(itemsToCompare)
-        recs = Recommender.find({"$text": {"$search": compString}}, {"score": {'$meta': 'textScore'}}).sort([('score', {'$meta':'textScore'})])
-        idlist = []
-        n = recs.count()
-        count = 0
-        orString = ""
-        for doc in recs:
-            count += 1
-            currId = doc['personId']
-            if currId == str(userId):
-                continue 
+        if ret == None:
+                dictToInsert = {"personId": str(userId)}
+                Recommender.insert_one(dictToInsert)
         
-            if count == n:
-                orString += doc['personId']
-            else:
-                orString += str(doc['personId'])+","
+        if 'items' in ret:
+            itemsToCompare = ret['items']
+            compString = stringifyarray(itemsToCompare)
+            recs = Recommender.find({"$text": {"$search": compString}}, {"score": {'$meta': 'textScore'}}).sort([('score', {'$meta':'textScore'})])
+            n = recs.count()
+            count = 0
+            orString = ""
+            for doc in recs:
+                count += 1
+                currId = doc['personId']
+                if currId == str(userId):
+                    continue 
+            
+                if count == n:
+                    orString += doc['personId']
+                else:
+                    orString += str(doc['personId'])+","
+            thename = ""
+            if(orString != ""):
+                print(orString)
+                namequery = (""" Select AG.itemName, AG.brandName, AG.description, AG.itemID, AG.price
+                                from (
+                                    Select Person.itemName, Person.brandName, Person.description, Person.itemID, Buyer.itemID2 as id2, Person.price
+                                    From 
+                                    (
+                                        (Select distinct retailerId, itemName, brandName, description, Items.id as itemID, price
+                                        From Items Left Join Purchases on Purchases.itemId = Items.id
+                                        Where Purchases.userId in ("""+orString+""") AND Items.availabiltyEndDate >= NOW()) as Person 
 
-        namequery = (""" Select AG.itemName, AG.brandName, AG.description, AG.itemID, AG.price
-                        from (
-                            Select Person.itemName, Person.brandName, Person.description, Person.itemID, Buyer.itemID2 as id2, Person.price
-                            From 
-                            (
-                                (Select distinct retailerId, itemName, brandName, description, Items.id as itemID, price
-                                From Items Left Join Purchases on Purchases.itemId = Items.id
-                                Where Purchases.userId in ("""+orString+""") AND Items.availabiltyEndDate >= NOW()) as Person 
+                                        Left Join 
 
-                                Left Join 
+                                        (Select distinct retailerId, itemName, brandName, description, Items.id as itemID2, price
+                                        From Items Left Join Purchases on Purchases.itemId = Items.id
+                                        Where Purchases.userId = %s AND Items.availabiltyEndDate >= NOW()) as Buyer
+                                        on Person.itemID = Buyer.itemID2
 
-                                (Select distinct retailerId, itemName, brandName, description, Items.id as itemID2, price
-                                From Items Left Join Purchases on Purchases.itemId = Items.id
-                                Where Purchases.userId = %s AND Items.availabiltyEndDate >= NOW()) as Buyer
-                                on Person.itemID = Buyer.itemID2
+                                    )
 
-                            )
-
-                        ) as AG
-                        Where AG.id2 is null;
-                    """) 
-        namecursor = cnx.cursor()
-        namecursor.execute(namequery, data)
-        thename = namecursor.fetchall()
+                                ) as AG
+                                Where AG.id2 is null;
+                            """) 
+                namecursor = cnx.cursor()
+                print('query failed')
+                namecursor.execute(namequery, data)
+                print('executed query')
+                thename = namecursor.fetchall()
+                print('here')
+        else:
+            thename = ""
         return render_template("listAll.html", res= result, userId=userId, names = thename );
     except:
         print("ERROR")
