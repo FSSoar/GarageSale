@@ -4,8 +4,9 @@ from flask_mail import Mail, Message
 from flask import make_response
 from flask import Flask, request, url_for, render_template, redirect
 from flask import Blueprint
+from flask_mail import Mail, Message
 import API_KEYS
-
+import requests
 
 import pymongo
 from bson.code import Code
@@ -116,12 +117,22 @@ def purchaseItem(userId, itemId):
     
 
     try: 
+
+        requests.get(url = "http://localhost:5000/mail/" + userId + "/" + itemId + "/" + price)
+
+   
+
+
+
         query = """ INSERT INTO Purchases(itemId, userId, purchasePrice) values (%s, %s, %s); 
                 """
         query2 = """Update Items 
                     Set	isCurrentlyAvailable = %s
                     Where id = %s;
                 """
+
+        
+
         cursor = cnx.cursor()
         cursor.execute(query, (itemId, userId, price))
         cnx.commit()
@@ -158,4 +169,8 @@ def purchaseItem(userId, itemId):
 
 @listItems.route('/completePurchase/<userId>')
 def completeTransaction(userId):
+
+
+
+
     return render_template("FinishTransaction.html", userId = userId)
