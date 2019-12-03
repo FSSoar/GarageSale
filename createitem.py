@@ -29,8 +29,8 @@ def index(userId):
                                   database='innodb')
     try:
         query = """ SELECT categoryId, AVG(price)
-                    from Items 
-                    GROUP BY categoryId; 
+                    from Items
+                    GROUP BY categoryId;
                 """
         cursor = cnx.cursor()
         cursor.execute(query)
@@ -57,15 +57,16 @@ def updateItem(userId, itemId):
         availabiltyEndDate = request.form['end']
         description = request.form['description']
         brandName = request.form['brandName']
+        price = request.form['price']
 
-        try: 
-            insertion = """ Update Items Set  itemName = %s,  availabiltyStartDate = %s, availabiltyEndDate = %s, description = %s, brandName = %s where id = %s  """
+        try:
+            insertion = """ Update Items Set  itemName = %s,  availabiltyStartDate = %s, availabiltyEndDate = %s, description = %s, brandName = %s, price = %s where id = %s  """
             cursor = cnx.cursor()
-            cursor.execute(insertion, (itemName, availabiltyStartDate, availabiltyEndDate, description, brandName, itemId ))
+            cursor.execute(insertion, (itemName, availabiltyStartDate, availabiltyEndDate, description, brandName, price, itemId ))
             cnx.commit()
             return redirect("/profile/" + userId)
-            
-        except: 
+
+        except:
             return "ERROR CREATING USER"
     return ""
 
@@ -77,10 +78,10 @@ def editItem(item):
 
 
 
-    try: 
+    try:
         query = """ SELECT *
-                    from Items 
-                    Where id = %s %s; 
+                    from Items
+                    Where id = %s %s;
                 """
         cursor = cnx.cursor()
         cursor.execute(query, (item, ""))
@@ -101,8 +102,8 @@ def createItem(userId):
 
 
     if request.method == 'POST':
-        
-        retailerID = userId; 
+
+        retailerID = userId;
         itemName = request.form['productName']
         availabiltyStartDate = request.form['start']
         availabiltyEndDate = request.form['end']
@@ -110,37 +111,16 @@ def createItem(userId):
         brandName = request.form['brandName']
         categoryId = request.form['category']
         price = request.form['price']
-        keywords = request.form['keywords']
-        keywordsArr = keywords.split(',')
-        print(keywords)
-        try: 
-            insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description, price  ) 
+        print(price)
+        try:
+            insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description, price  )
                                 values(%s, %s, %s,%s, %s, %s, %s, %s, %s );"""
             cursor = cnx.cursor()
             ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description, price ))
             cnx.commit()
-
-            for keyword in keywordsArr:
-                insertion = """ 
-                                Insert INTO Metadata(metaData, itemId)
-                                values(%s, %s);
-                            """
-
-                cursor = cnx.cursor()
-                ans = cursor.execute(insertion, (keyword, cursor.lastrowid))
-                cnx.commit()
-
-
-
-
-
             dictToInsert = { "newItem":str(cursor.lastrowid), "owner": int(userId) }
             Recommender.insert_one(dictToInsert)
             return redirect("/profile/"+str(userId))
-            
-        except: 
+
+        except:
             return "ERROR CREATING USER"
-
-
-
-
