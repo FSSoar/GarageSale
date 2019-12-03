@@ -7,11 +7,11 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    
+
     <title>GarageSale - Create Item</title>
   </head>
   <body>
@@ -46,14 +46,14 @@
         </div>
       </nav>
 
-      <br> 
-      <br> 
-      <br> 
+      <br>
+      <br>
+      <br>
       <center>
         <div style="width:75%;" class="jumbotron">
-            <h3>Create Product </h3> 
+            <h3>Create Product </h3>
             <br>
-            <br> 
+            <br>
             <form action="create/{{ userId }}" method="POST">
                 <div class="form-group">
                     <label for="formGroupExampleInput">Product Name</label>
@@ -71,11 +71,11 @@
                   </select>
                 </div>
                 <div class="form-group">
-                    <label for="formGroupExampleInput2">Start Availability Date</label>
+                    <label for="formGroupExampleInput2">Start Availability Date (yyyy/mm/dd)</label>
                     <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Start Availability Date" name="start">
                 </div>
                 <div class="form-group">
-                        <label for="formGroupExampleInput2">End Availability Date</label>
+                        <label for="formGroupExampleInput2">End Availability Date (yyyy/mm/dd)</label>
                         <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="End Availability Date" name="end">
                 </div>
                 <div class="form-group">
@@ -95,8 +95,8 @@
                 </div>
             </form>
         </div>
-        
-    
+
+
     </center>
   </body>
 
@@ -135,5 +135,5 @@
         .trigger("change");
 
   </script>
-  
+
 </html>
