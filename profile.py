@@ -30,13 +30,14 @@ def index(profile):
     
 
     try: 
-        query = """ SELECT retailerId, itemName, brandName, description, Items.id, firstname, lastName, email, phoneNumber, zipCode
+        query = """ SELECT retailerId, itemName, brandName, description, Items.id, isCurrentlyAvailable
                     from Items  Left Join Users on Items.retailerId = Users.id
                     where retailerID = %s and ItemName != %s; 
                 """
         cursor = cnx.cursor()
         cursor.execute(query, (profile, ""))
         result = cursor.fetchall()
+        print(result)
 
         tquery = """ SELECT retailer.firstName as ownerFirstName, retailer.lastName as ownerLastName, purchase_date, purchasePrice, Items.itemName, Items.brandName, Items.availabiltyEndDate as endTime, Items.availabiltyStartDate as startTime
                     FROM Users as retailer, (Users Inner Join Purchases on Users.id = Purchases.userId) Inner Join Items on Purchases.itemId = Items.id
@@ -48,7 +49,7 @@ def index(profile):
         tdata = (str(profile), )
         tcursor.execute(tquery, tdata)
         result2 = tcursor.fetchall()
-        print(result2)
+        
         totalSpent = 0
         count = 0
         for row in result2:
@@ -57,9 +58,8 @@ def index(profile):
         
 
         return render_template("profile.html", userId=profile, username = name, res= result, transList=result2, numTransactions=count, totalCost= round(totalSpent, 2) );
-    except:
-        print("ERROR")
-        return "error"
+    except Exception as e:
+        print(e)
 
 
 
