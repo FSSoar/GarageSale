@@ -1,10 +1,16 @@
 
+Select Items.id, count(Items.id) as itemCount
+		From Items Left Join  Purchases On Purchases.itemId = Items.id
+        Group By Items.id;
+        
+-- Select * from Items;
 CREATE OR REPLACE View Popularity as
-		Select itemId, count(itemId) as itemCount
-		From Purchases Left Join  Items On Purchases.itemId = Items.id
-		Where Items.retailerID = 1 and Items.itemName is Not NULL and Items.itemName != "" and Items.id is Not NULL
-		Group By itemId;
+		Select Items.id as itemId, count(Items.id) as itemCount
+		From Items Left Join  Purchases On Purchases.itemId = Items.id
+		Group By Items.id;
 
+-- drop view Popularity; 
+Select * from Popularity;
 
 
 Select itemId, itemName, brandName, price, count(itemId)
@@ -13,17 +19,17 @@ From
 	(
 	(Select *
 	From Items Left Join Popularity On Popularity.itemId = Items.id
-	Where (SOUNDEX(Items.itemName) like SOUNDEX("manshu") or Items.itemName Like "%manshu%") and Items.itemName != "" and Popularity.itemId 
+	Where (SOUNDEX(Items.itemName) like SOUNDEX("screwdriver") or Items.itemName Like "%screwdriver%") and Items.itemName != "" and Popularity.itemId and Items.isCurrentlyAvailable
 	order By Popularity.itemCount)
 	Union
 	(Select *
 	From Items Left Join Popularity On Popularity.itemId = Items.id
-	Where (SOUNDEX(Items.brandName) like SOUNDEX("dyson") or Items.brandName Like "%dyson%") and Items.itemName != "" and Popularity.itemId 
+	Where (SOUNDEX(Items.brandName) like SOUNDEX("screwdriver") or Items.brandName Like "%screwdriver%") and Items.itemName != "" and Popularity.itemId and Items.isCurrentlyAvailable
 	order By Popularity.itemCount)
 	Union
 	(Select *
 	From Items Left Join Popularity On Popularity.itemId = Items.id
-	Where (SOUNDEX(Items.description) like SOUNDEX("cleaner") or Items.description Like "%cleaner%") and Items.itemName != "" and Popularity.itemId 
+	Where (SOUNDEX(Items.description) like SOUNDEX("screwdriver") or Items.description Like "%screwdriver%") and Items.itemName != "" and Popularity.itemId and Items.isCurrentlyAvailable
 	order By Popularity.itemCount)
 	Union
 	(
@@ -31,7 +37,7 @@ From
 	From	(
 		Select Items.id as id, retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable, brandName, description, categoryId, price 
 		from Metadata Left Join Items on Metadata.itemId = Items.id
-		Where (SOUNDEX(Items.description) like SOUNDEX("dyson") or Items.description Like "%dyso%")
+		Where (SOUNDEX(Items.description) like SOUNDEX("screwdriver") or Items.description Like "%screwdriver%") and Items.isCurrentlyAvailable
 		) as metadata  Left Join Popularity On Popularity.itemId = metadata.id
 
 	) 

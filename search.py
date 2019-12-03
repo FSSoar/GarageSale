@@ -58,10 +58,10 @@ def searchPlainText(queryStr):
 
             queryPopularity = """ 
                             CREATE OR REPLACE View Popularity as
-                            Select itemId, count(itemId) as itemCount
-                            From Purchases Left Join  Items On Purchases.itemId = Items.id
-                            Where Items.retailerID = 1 and Items.itemName is Not NULL and Items.itemName != "" and Items.id is Not NULL
-                            Group By itemId;
+                            Select Items.id as itemId, count(Items.id) as itemCount
+                            From Items Left Join  Purchases On Purchases.itemId = Items.id
+                            Group By Items.id;
+
                             
                             """
 
