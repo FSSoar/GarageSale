@@ -45,6 +45,7 @@ def index(userId):
         data = (userId, )
         cursor.execute(query, data)
         result = cursor.fetchall()
+        print(result)
 
         ret = Recommender.find_one({"personId": str(userId)})
         itemsToCompare = ret['items']
