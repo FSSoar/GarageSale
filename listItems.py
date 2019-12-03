@@ -46,10 +46,12 @@ def index(userId):
         cursor.execute(query, data)
         result = cursor.fetchall()
 
+
         ret = Recommender.find_one({"personId": str(userId)})
         if ret == None:
                 dictToInsert = {"personId": str(userId)}
                 Recommender.insert_one(dictToInsert)
+        
         if 'items' in ret:
             itemsToCompare = ret['items']
             compString = stringifyarray(itemsToCompare)
@@ -69,7 +71,8 @@ def index(userId):
                     orString += str(doc['personId'])+","
             thename = ""
             if(orString != ""):
-                namequery = (""" Select A.itemName, AG.brandName, AG.description, AG.itemID, AG.price
+                print(orString)
+                namequery = (""" Select AG.itemName, AG.brandName, AG.description, AG.itemID, AG.price
                                 from (
                                     Select Person.itemName, Person.brandName, Person.description, Person.itemID, Buyer.itemID2 as id2, Person.price
                                     From 
@@ -91,8 +94,11 @@ def index(userId):
                                 Where AG.id2 is null;
                             """) 
                 namecursor = cnx.cursor()
+                print('query failed')
                 namecursor.execute(namequery, data)
+                print('executed query')
                 thename = namecursor.fetchall()
+                print('here')
         else:
             thename = ""
         return render_template("listAll.html", res= result, userId=userId, names = thename );
