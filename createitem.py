@@ -110,13 +110,30 @@ def createItem(userId):
         brandName = request.form['brandName']
         categoryId = request.form['category']
         price = request.form['price']
-        print(price)
+        keywords = request.form['keywords']
+        keywordsArr = keywords.split(',')
+        print(keywords)
         try: 
             insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description, price  ) 
                                 values(%s, %s, %s,%s, %s, %s, %s, %s, %s );"""
             cursor = cnx.cursor()
             ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description, price ))
             cnx.commit()
+
+            for keyword in keywordsArr:
+                insertion = """ 
+                                Insert INTO Metadata(metaData, itemId)
+                                values(%s, %s);
+                            """
+
+                cursor = cnx.cursor()
+                ans = cursor.execute(insertion, (keyword, cursor.lastrowid))
+                cnx.commit()
+
+
+
+
+
             dictToInsert = { "newItem":str(cursor.lastrowid), "owner": int(userId) }
             Recommender.insert_one(dictToInsert)
             return redirect("/profile/"+str(userId))
