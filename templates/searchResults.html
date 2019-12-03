@@ -124,13 +124,12 @@
                                     <div class="row"> 
                                         <div class="col-10"> 
                                             <h5 class="card-title">{{r[1] }} </h5>
-                                            <p class="card-text"> Item #{{r[4]}}</p>
+                                            <p class="card-text"> Item #{{r[0]}}</p>
                                             <p class="card-text"> Brand: {{r[2]}}</p>
-                                            <p class="card-text"> {{r[3]}}</p>
                                         </div>
                                         <div class="col-2" style="min-height: 90%; text-align:center;">
-                                            <h1> $9.99</h1>
-                                            <a href="/items/purchase/{{userId}}/{{r[4]}}?price={{r[10]}}" class="btn btn-primary" style="margin-right: 30px; margin-left: 30px;">Purchase Item</a>
+                                            <h1>${{r[3]}}</h1>
+                                            <a href="/items/purchase/{{userId}}/{{r[0]}}?price={{r[3]}}" class="btn btn-primary" style="margin-right: 30px; margin-left: 30px;">Purchase Item</a>
                                         </div>
                                     </div>
                                     </div>

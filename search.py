@@ -76,7 +76,7 @@ def searchPlainText(queryStr):
             query = """
             
             
-                Select itemId, itemName, brandName, price, count(itemId)
+                Select itemID, itemName, brandName, price, count(itemId)
                 From  
 
                     (
