@@ -5,6 +5,8 @@ CREATE OR REPLACE View Popularity as
 		Where Items.retailerID = 1 and Items.itemName is Not NULL and Items.itemName != "" and Items.id is Not NULL
 		Group By itemId;
 
+
+
 Select itemId, itemName, brandName, price, count(itemId)
 From  
 
