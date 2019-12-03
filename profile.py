@@ -49,8 +49,14 @@ def index(profile):
         tcursor.execute(tquery, tdata)
         result2 = tcursor.fetchall()
         print(result2)
+        totalSpent = 0
+        count = 0
+        for row in result2:
+            totalSpent += row[3]
+            count += 1
+        
 
-        return render_template("profile.html", userId=profile, username = name, res= result, transList=result2 );
+        return render_template("profile.html", userId=profile, username = name, res= result, transList=result2, numTransactions=count, totalCost= round(totalSpent, 2) );
     except:
         print("ERROR")
         return "error"
