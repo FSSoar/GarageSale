@@ -66,12 +66,29 @@ def index(userId):
             else:
                 orString += str(doc['personId'])+","
 
-        namequery = (""" SELECT firstname, lastName 
-                        FROM Users 
-                        WHERE id IN ( """+orString+""" )
+        namequery = (""" Select AG.itemName, AG.brandName, AG.description, AG.itemID, AG.price
+                        from (
+                            Select Person.itemName, Person.brandName, Person.description, Person.itemID, Buyer.itemID2 as id2, Person.price
+                            From 
+                            (
+                                (Select distinct retailerId, itemName, brandName, description, Items.id as itemID, price
+                                From Items Left Join Purchases on Purchases.itemId = Items.id
+                                Where Purchases.userId in ("""+orString+""") AND Items.availabiltyEndDate >= NOW()) as Person 
+
+                                Left Join 
+
+                                (Select distinct retailerId, itemName, brandName, description, Items.id as itemID2, price
+                                From Items Left Join Purchases on Purchases.itemId = Items.id
+                                Where Purchases.userId = %s AND Items.availabiltyEndDate >= NOW()) as Buyer
+                                on Person.itemID = Buyer.itemID2
+
+                            )
+
+                        ) as AG
+                        Where AG.id2 is null;
                     """) 
         namecursor = cnx.cursor()
-        namecursor.execute(namequery)
+        namecursor.execute(namequery, data)
         thename = namecursor.fetchall()
         return render_template("listAll.html", res= result, userId=userId, names = thename );
     except:
