@@ -31,7 +31,7 @@ def index(profile):
         print(result)
 
 
-        return render_template("editProfile.html", res= result[0])
+        return render_template("editProfile.html", userId=profile, res= result[0])
 
     except:
         return None
