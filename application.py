@@ -2,7 +2,7 @@ from flask import jsonify
 import mysql.connector
 from flask_mail import Mail, Message
 from flask import make_response
-from flask import Flask, request, url_for, render_template
+from flask import Flask, request, url_for, render_template, redirect
 
 from signup import signup
 from login import login
