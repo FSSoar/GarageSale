@@ -85,7 +85,7 @@ def editItem(item):
         cursor = cnx.cursor()
         cursor.execute(query, (item, ""))
         result = cursor.fetchall()
-
+        print(result[0])
         return render_template("updateItem.html", res= result[0])
 
     except:

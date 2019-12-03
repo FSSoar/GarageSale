@@ -12,6 +12,7 @@ from editProfile import editProfile
 from listItems import listItems
 from search import search
 from mongotest import mongotest
+from flask import redirect
 
 application = Flask(__name__)
 application.register_blueprint(signup, url_prefix="/signUp" )
@@ -30,7 +31,7 @@ application.register_blueprint(mongotest, url_prefix='/mongotest')
 @application.route('/')
 def hello_world():
 
-    return render_template("home.html");
+    return redirect("/login");
 
 
 
