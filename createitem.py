@@ -109,12 +109,13 @@ def createItem(userId):
         description = request.form['description']
         brandName = request.form['brandName']
         categoryId = request.form['category']
-
+        price = request.form['price']
+        print(price)
         try: 
-            insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description  ) 
-                                values(%s, %s, %s,%s, %s, %s, %s, %s );"""
+            insertion = """ Insert INTO Items(retailerID, itemName, availabiltyStartDate, availabiltyEndDate, isCurrentlyAvailable , brandName, categoryId, description, price  ) 
+                                values(%s, %s, %s,%s, %s, %s, %s, %s, %s );"""
             cursor = cnx.cursor()
-            ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description ))
+            ans = cursor.execute(insertion, (retailerID, itemName, availabiltyStartDate, availabiltyEndDate, True, brandName, categoryId, description, price ))
             cnx.commit()
             dictToInsert = { "newItem":str(cursor.lastrowid), "owner": int(userId) }
             Recommender.insert_one(dictToInsert)
