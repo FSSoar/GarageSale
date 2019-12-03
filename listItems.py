@@ -37,6 +37,7 @@ def index(userId):
                                   database='innodb')
 
     try: 
+        namesList = ""
         query = """ SELECT retailerId, itemName, brandName, description, Items.id, theRetailer.firstname, theRetailer.lastName, theRetailer.email, theRetailer.phoneNumber, theRetailer.zipCode, price
                     from Items, Users as theRetailer
                     where ItemName !="" and isCurrentlyAvailable = true AND Items.retailerId <> %s AND Items.retailerId = theRetailer.id; 
@@ -71,7 +72,6 @@ def index(userId):
                     orString += str(doc['personId'])+","
             thename = ""
             if(orString != ""):
-                print(orString)
                 namequery = (""" Select AG.itemName, AG.brandName, AG.description, AG.itemID, AG.price
                                 from (
                                     Select Person.itemName, Person.brandName, Person.description, Person.itemID, Buyer.itemID2 as id2, Person.price
@@ -94,14 +94,19 @@ def index(userId):
                                 Where AG.id2 is null;
                             """) 
                 namecursor = cnx.cursor()
-                print('query failed')
                 namecursor.execute(namequery, data)
-                print('executed query')
                 thename = namecursor.fetchall()
-                print('here')
+
+                matchNameQuery = """ SELECT firstName, lastName
+                                    FROM Users
+                                    Where id IN ("""+orString+""")
+                                """
+                matchNameCursor = cnx.cursor()
+                matchNameCursor.execute(matchNameQuery)
+                namesList = matchNameCursor.fetchall()
         else:
             thename = ""
-        return render_template("listAll.html", res= result, userId=userId, names = thename );
+        return render_template("listAll.html", res= result, userId=userId, names = thename, namesList = namesList );
     except:
         print("ERROR")
 
@@ -132,6 +137,9 @@ def purchaseItem(userId, itemId):
         query2 = """Update Items 
                     Set	isCurrentlyAvailable = %s
                     Where id = %s;
+                """
+        query3 = """
+
                 """
         cursor = cnx.cursor()
         cursor.execute(query, (itemId, userId, price))
