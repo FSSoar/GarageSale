@@ -41,6 +41,11 @@ def createUser():
             userId = cursor.lastrowid
             print(userId)
             print("/profile/" + str(userId))
+            ret = Recommender.find_one({"personId": str(userId)})
+            if ret == None:
+                dictToInsert = {"personId": str(userId)}
+                Recommender.insert_one(dictToInsert)
+            
             return redirect("/profile/" + str(userId))
         except: 
             return "ERROR CREATING USER. Refresh the page and try again"
