@@ -78,7 +78,10 @@
                   </div>
                 </div>
               </div>
+            {% else %}
+              Continue buying to start to see items.
             {% endfor %}
+
             
 
             <div style="margin-top: 45px;">
@@ -101,6 +104,10 @@
                           <p class="card-text"> Item #{{r[4]}}</p>
                           <p class="card-text"> Brand: {{r[2]}}</p>
                           <p class="card-text"> {{r[3]}}</p>
+                          <h5 class="card-title">Contact Information of Owner</h5>
+                          <p class="card-text"> Name: {{r[5]}} {{r[6]}}</p>
+                          <p class="card-text"> Email: {{r[7]}}</p>
+                          <p class="card-text"> Phone: {{r[8]}}</p>
                       </div>
                         <div class="col-2" style="min-height: 90%; text-align:center;">
                           <h1>${{r[10]}}</h1>
